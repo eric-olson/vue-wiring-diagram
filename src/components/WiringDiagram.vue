@@ -34,6 +34,7 @@
 
 <script>
 // import * as d3 from 'd3'
+import initComponents from '../assets/components.json'
 import ComponentBubble from './ComponentBubble.vue'
 import NodeLink from './NodeLink.vue'
 
@@ -46,54 +47,7 @@ export default {
   data() {
     return {
       selected: '',
-      components: {
-        component1: {
-          name: 'Component 1',
-          description: 'some component',
-          x: 100,
-          y: 100,
-          inputs: {
-            time: {
-              type: 'double',
-            },
-            power: {
-              type: 'bool',
-            },
-            input3: {
-              type: 'uint8',
-            },
-            input4: {
-              type: 'uint8',
-            },
-          },
-          outputs: {
-            output1: {
-              type: 'double',
-            },
-          },
-        },
-        component2: {
-          name: 'Component 2',
-          x: 400,
-          y: 120,
-          description: 'some other component',
-          inputs: {
-            input1: {
-              type: 'double',
-            },
-          },
-          outputs: {
-            time: {
-              type: 'double',
-              description: 'seconds since epoch',
-            },
-            power: {
-              type: 'bool',
-              description: 'power state',
-            },
-          },
-        },
-      },
+      components: initComponents,
       nodePositions: {},
       connectionDescriptions: [
         {

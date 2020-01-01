@@ -113,6 +113,14 @@ export default {
     },
     stopMove() {
       this.isMoving = false
+      this.$emit(
+        'update-pos',
+        {
+          x: this.x + d3.event.dx,
+          y: this.y + d3.event.dy,
+        },
+        this.nodePositions
+      )
     },
     yOffset(index) {
       return index * 20 + 40

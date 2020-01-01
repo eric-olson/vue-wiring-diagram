@@ -1,28 +1,51 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <WiringDiagram class="wiring-diagram" @select-component="(sel) => (selectedComponent = sel)" />
+    <InfoPane class="info-pane" :selected-component="selectedComponent" />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import WiringDiagram from './components/WiringDiagram.vue'
+import InfoPane from './components/InfoPane.vue'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    HelloWorld
-  }
-};
+    WiringDiagram,
+    InfoPane,
+  },
+  data() {
+    return {
+      selectedComponent: null,
+    }
+  },
+}
 </script>
 
 <style>
+html,
+body {
+  height: 100%;
+}
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+.wiring-diagram {
+  flex: 3 0px;
+  margin: auto;
+  border: 1px solid grey;
+}
+.info-pane {
+  flex: 1 0px;
+  margin: auto;
+  height: 100%;
 }
 </style>

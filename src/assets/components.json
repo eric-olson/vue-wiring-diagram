@@ -2,7 +2,7 @@
   "component1": {
     "name": "Component 1",
     "description": "some component",
-    "x": 100,
+    "x": 400,
     "y": 100,
     "inputs": {
       "time": {
@@ -26,7 +26,7 @@
   },
   "component2": {
     "name": "Component 2",
-    "x": 400,
+    "x": 100,
     "y": 120,
     "description": "some other component",
     "inputs": {

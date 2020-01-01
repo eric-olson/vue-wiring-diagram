@@ -18,6 +18,7 @@
       :x="inputXOffset"
       :y="yOffset(index)"
       :name="wirename"
+      @new-wire="$emit('new-wire', name + '_input_' + wirename)"
     />
     <WireNode
       v-for="(output, wirename, index) in component.outputs"
@@ -26,6 +27,7 @@
       :y="yOffset(index)"
       :name="wirename"
       :flip="true"
+      @new-wire="$emit('new-wire', name + '_output_' + wirename)"
     />
   </g>
 </template>

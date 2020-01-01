@@ -1,6 +1,13 @@
 <template>
   <g :transform="'translate(' + x + ',' + y + ')'">
-    <rect class="wire-node-target" width="10px" height="10px" rx="2px" />
+    <rect
+      class="wire-node-target"
+      width="10px"
+      height="10px"
+      rx="2px"
+      @click="$emit('new-wire')"
+      @mousedown.stop.prevent
+    />
     <text
       class="wire-node-name"
       :class="flip ? 'node-flip' : 'node-normal'"
@@ -33,6 +40,9 @@ export default {
 </script>
 
 <style>
+text {
+  cursor: move;
+}
 .wire-node-target {
   stroke: black;
   fill: white;

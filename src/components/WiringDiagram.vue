@@ -16,6 +16,7 @@
             updateNodePositions(nodePos)
           }
         "
+        @new-wire="(nodeId) => newWire(nodeId)"
       />
     </g>
 
@@ -27,7 +28,11 @@
         :source="connection.source"
         :target="connection.target"
       />
-      <NodeLink v-if="linkBeingCreated" :source="{ x: 0, y: 0 }" :target="{ x: 100, y: 100 }" />
+      <NodeLink
+        v-if="linkBeingCreated"
+        :source="nodePositions[linkBeingCreated]"
+        :target="{ x: 100, y: 100 }"
+      />
     </g>
   </svg>
 </template>
@@ -51,11 +56,16 @@ export default {
       nodePositions: {},
       connectionDescriptions: [
         {
-          source: 'component1_output_output1',
-          target: 'component2_input_input1',
+          source: 'component2_output_power',
+          target: 'component1_input_power',
+        },
+        {
+          source: 'component2_output_time',
+          target: 'component1_input_time',
         },
       ],
       linkBeingCreated: null,
+      mousePos: null,
     }
   },
   computed: {
@@ -64,12 +74,12 @@ export default {
         x: 0,
         y: 0,
       }
-      const conns = {}
+      const conns = []
       this.connectionDescriptions.forEach((conn) => {
-        conns[conn] = {
+        conns.push({
           source: this.nodePositions[conn.source] || initCoords,
           target: this.nodePositions[conn.target] || initCoords,
-        }
+        })
       })
       return conns
     },
@@ -80,11 +90,18 @@ export default {
       this.selected = key
     },
     deselect() {
+      if (this.linkBeingCreated) {
+        this.linkBeingCreated = null
+        return
+      }
       this.$emit('select-component', null)
       this.selected = ''
     },
     updateNodePositions(newPositions) {
       this.nodePositions = { ...this.nodePositions, ...newPositions }
+    },
+    newWire(nodeId) {
+      this.linkBeingCreated = nodeId
     },
   },
   mounted() {},

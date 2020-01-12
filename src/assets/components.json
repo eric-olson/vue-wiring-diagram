@@ -44,5 +44,24 @@
         "description": "power state"
       }
     }
+  },
+  "lotsofoutputs": {
+    "name": "Lots of outputs",
+    "x": 100,
+    "y": 320,
+    "description": "test",
+    "inputs": {},
+    "outputs": {
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {}
+    }
   }
 }

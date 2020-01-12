@@ -31,14 +31,14 @@
       <NodeLink
         v-if="linkBeingCreated"
         :source="nodePositions[linkBeingCreated]"
-        :target="{ x: 100, y: 100 }"
+        :target="mousePos"
       />
     </g>
   </svg>
 </template>
 
 <script>
-// import * as d3 from 'd3'
+import * as d3 from 'd3'
 import initComponents from '../assets/components.json'
 import ComponentBubble from './ComponentBubble.vue'
 import NodeLink from './NodeLink.vue'
@@ -65,7 +65,10 @@ export default {
         },
       ],
       linkBeingCreated: null,
-      mousePos: null,
+      mousePos: {
+        x: 50,
+        y: 50,
+      },
     }
   },
   computed: {
@@ -101,10 +104,29 @@ export default {
       this.nodePositions = { ...this.nodePositions, ...newPositions }
     },
     newWire(nodeId) {
-      this.linkBeingCreated = nodeId
+      if (this.linkBeingCreated === nodeId) {
+        return
+      }
+      if (this.linkBeingCreated == null) {
+        this.linkBeingCreated = nodeId
+      } else {
+        this.connectionDescriptions.push({
+          source: this.linkBeingCreated,
+          target: nodeId,
+        })
+        this.linkBeingCreated = null
+      }
     },
   },
-  mounted() {},
+  mounted() {
+    /** use d3 DOM manip to set up drag & drop magic */
+    d3.select(this.$el).on('mousemove', () => {
+      this.mousePos = {
+        x: d3.event.offsetX,
+        y: d3.event.offsetY,
+      }
+    })
+  },
 }
 </script>
 
@@ -117,5 +139,8 @@ path {
   fill: none;
   stroke: #76bf8a;
   stroke-width: 3px;
+}
+.reset-text {
+  color: white;
 }
 </style>

@@ -70,7 +70,11 @@ export default {
       return 200
     },
     height() {
-      return Math.max(100, Object.keys(this.component.inputs).length * 20 + 50)
+      const bigger = Math.max(
+        Object.keys(this.component.inputs).length,
+        Object.keys(this.component.outputs).length
+      )
+      return Math.max(100, bigger * 20 + 50)
     },
     inputXOffset() {
       return 10

@@ -31,7 +31,7 @@ export default {
 
 <style scoped>
 .node-link {
-  stroke: blue;
+  stroke: darkslategray;
   stroke-width: 2px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <svg @click.self="deselect">
+  <svg @click.self="handleClick">
     <!-- Component Boxes -->
     <g class="box-group">
       <ComponentBubble
@@ -7,6 +7,8 @@
         :key="name"
         :name="name"
         :component="component"
+        :x="component.x"
+        :y="component.y"
         :is-selected="selected == name"
         @select-me="select(component, name)"
         @update-pos="
@@ -39,7 +41,6 @@
 
 <script>
 import * as d3 from 'd3'
-import initComponents from '../assets/components.json'
 import ComponentBubble from './ComponentBubble.vue'
 import NodeLink from './NodeLink.vue'
 
@@ -49,10 +50,15 @@ export default {
     ComponentBubble,
     NodeLink,
   },
+  props: {
+    components: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       selected: '',
-      components: initComponents,
       nodePositions: {},
       connectionDescriptions: [
         {
@@ -92,11 +98,13 @@ export default {
       this.$emit('select-component', component)
       this.selected = key
     },
-    deselect() {
+    handleClick() {
+      // if link is being created, click on canvas means "cancel creating link"
       if (this.linkBeingCreated) {
         this.linkBeingCreated = null
         return
       }
+      // otherwise, click on canvas means "deselect component"
       this.$emit('select-component', null)
       this.selected = ''
     },
@@ -119,7 +127,7 @@ export default {
     },
   },
   mounted() {
-    /** use d3 DOM manip to set up drag & drop magic */
+    /** use d3 to track mousemove and update mousePos accordingly */
     d3.select(this.$el).on('mousemove', () => {
       this.mousePos = {
         x: d3.event.offsetX,

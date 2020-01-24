@@ -12,23 +12,25 @@
       rx="15"
     />
     <text class="component-name" :x="width / 2" y="20">{{ name }}</text>
-    <WireNode
-      v-for="(input, wirename, index) in component.inputs"
-      :key="name + '_input_' + wirename"
-      :x="inputXOffset"
-      :y="yOffset(index)"
-      :name="wirename"
-      @new-wire="$emit('new-wire', name + '_input_' + wirename)"
-    />
-    <WireNode
-      v-for="(output, wirename, index) in component.outputs"
-      :key="name + '_output_' + wirename"
-      :x="outputXOffset"
-      :y="yOffset(index)"
-      :name="wirename"
-      :flip="true"
-      @new-wire="$emit('new-wire', name + '_output_' + wirename)"
-    />
+    <g v-if="showIO">
+      <WireNode
+        v-for="(input, wirename, index) in component.inputs"
+        :key="name + '_input_' + wirename"
+        :x="inputXOffset"
+        :y="yOffset(index)"
+        :name="wirename"
+        @new-wire="$emit('new-wire', name + '_input_' + wirename)"
+      />
+      <WireNode
+        v-for="(output, wirename, index) in component.outputs"
+        :key="name + '_output_' + wirename"
+        :x="outputXOffset"
+        :y="yOffset(index)"
+        :name="wirename"
+        :flip="true"
+        @new-wire="$emit('new-wire', name + '_output_' + wirename)"
+      />
+    </g>
   </g>
 </template>
 
@@ -49,9 +51,21 @@ export default {
       type: String,
       required: true,
     },
+    showIO: {
+      type: Boolean,
+      default: true,
+    },
     isSelected: {
       type: Boolean,
       default: false,
+    },
+    x: {
+      type: Number,
+      default: 0,
+    },
+    y: {
+      type: Number,
+      default: 0,
     },
   },
   data() {
@@ -60,16 +74,13 @@ export default {
     }
   },
   computed: {
-    x() {
-      return this.component.x
-    },
-    y() {
-      return this.component.y
-    },
     width() {
       return 200
     },
     height() {
+      if (!this.showIO) {
+        return 40
+      }
       const bigger = Math.max(
         Object.keys(this.component.inputs).length,
         Object.keys(this.component.outputs).length
